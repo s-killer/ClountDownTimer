@@ -13,7 +13,7 @@ import java.util.Locale;
 public class TimerActivity extends AppCompatActivity {
     private static final long START_TIME_IN_MILLIS = 15000; //20sec
 
-//    TODO Accept Input from user & store it in  START_TIME_IN_MILLIS
+    //    TODO Accept Input from user & store it in  START_TIME_IN_MILLIS
     int progress;
 
     private TextView CountDown_Tv;
@@ -22,14 +22,13 @@ public class TimerActivity extends AppCompatActivity {
 
     private CountDownTimer MyCountDownTimer;
     private boolean TimerRunning;
-
-//        Initially TimeLeftInMillis will be same as START_TIME_IN_MILLIS
-    private long TimeLeftInMillis = START_TIME_IN_MILLIS,remainingTime;
+    int numberOfSeconds = (int) (START_TIME_IN_MILLIS / 1000); // Ex : 20000/1000 = 20
 
     ProgressBar MyProgressBar;
-    private int  ProgressBarStatus;
-    int numberOfSeconds = (int) (START_TIME_IN_MILLIS/1000); // Ex : 20000/1000 = 20
-    int factor = 100/numberOfSeconds; // 100/20 = 5, for each second multiply this, for sec 1 progressPercentage = 1x5 =5, for sec 5 progressPercentage = 5x5 = 25, for sec 20 progressPercentage = 20x5 =100
+    int factor = 100 / numberOfSeconds; // 100/20 = 5, for each second multiply this, for sec 1 progressPercentage = 1x5 =5, for sec 5 progressPercentage = 5x5 = 25, for sec 20 progressPercentage = 20x5 =100
+    //        Initially TimeLeftInMillis will be same as START_TIME_IN_MILLIS
+    private long TimeLeftInMillis = START_TIME_IN_MILLIS, remainingTime;
+    private int ProgressBarStatus;
 
 
     @Override
@@ -83,15 +82,8 @@ public class TimerActivity extends AppCompatActivity {
                 TimeLeftInMillis = millisUntilFinished;
                 updateCountDownText(); //  Updating CountDown_Tv
                 /*for incrementing progressbar every second calculating progress*/
-//                progress = (int) (START_TIME_IN_MILLIS / (1 * 100));
-//                remainingTime=START_TIME_IN_MILLIS-millisUntilFinished;
-//                remainingTime=millisUntilFinished;
-//                progress = (int) (((START_TIME_IN_MILLIS - remainingTime)/START_TIME_IN_MILLIS) * 100);
-//                ProgressBarStatus +=progress; // Incrementing progress
-//                MyProgressBar.setProgress(ProgressBarStatus);
-
                 int secondsRemaining = (int) (millisUntilFinished / 1000);
-                int progressPercentage = (numberOfSeconds-secondsRemaining) * factor ;
+                int progressPercentage = (numberOfSeconds - secondsRemaining) * factor;
                 MyProgressBar.setProgress(progressPercentage);
 
             }
@@ -134,8 +126,6 @@ public class TimerActivity extends AppCompatActivity {
     private void updateCountDownText() {
         int minutes = (int) (TimeLeftInMillis / 1000) / 60;
         int seconds = (int) (TimeLeftInMillis / 1000) % 60;
-//        int millis = (int) (TimeLeftInMillis / 1000);
-
         String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
 
 //        int seconds = (int) (millisUntilFinished / 1000) % 60;
