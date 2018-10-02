@@ -11,10 +11,10 @@ import android.widget.TextView;
 import java.util.Locale;
 
 public class TimerActivity extends AppCompatActivity {
-    private static final long START_TIME_IN_MILLIS = 15000; //20sec
+    static final long DefaultStartingTime = 10000; //10sec
+    private static final long START_TIME_IN_MILLIS = DefaultStartingTime;
 
     //    TODO Accept Input from user & store it in  START_TIME_IN_MILLIS
-    int progress;
 
     private TextView CountDown_Tv;
     private Button StartPauseButton;
@@ -25,11 +25,11 @@ public class TimerActivity extends AppCompatActivity {
     int numberOfSeconds = (int) (START_TIME_IN_MILLIS / 1000); // Ex : 20000/1000 = 20
 
     ProgressBar MyProgressBar;
-    int factor = 100 / numberOfSeconds; // 100/20 = 5, for each second multiply this, for sec 1 progressPercentage = 1x5 =5, for sec 5 progressPercentage = 5x5 = 25, for sec 20 progressPercentage = 20x5 =100
+    // 100/20 = 5, for each second multiply this, for sec 1 progressPercentage = 1x5 =5,
+    // for sec 5 progressPercentage = 5x5 = 25, for sec 20 progressPercentage = 20x5 =100
+    int factor = 100 / numberOfSeconds;
     //        Initially TimeLeftInMillis will be same as START_TIME_IN_MILLIS
     private long TimeLeftInMillis = START_TIME_IN_MILLIS, remainingTime;
-    private int ProgressBarStatus;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,6 @@ public class TimerActivity extends AppCompatActivity {
         MyProgressBar.setProgress(0);
         MyProgressBar.setMax(100);
 
-
     }
 
     private void startTimer() {
@@ -102,8 +101,6 @@ public class TimerActivity extends AppCompatActivity {
         TimerRunning = true;
         StartPauseButton.setText("Pause");
         ResetButton.setVisibility(View.INVISIBLE);
-
-
     }
 
     private void pauseTimer() {
@@ -128,15 +125,11 @@ public class TimerActivity extends AppCompatActivity {
         int seconds = (int) (TimeLeftInMillis / 1000) % 60;
         String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
 
-//        int seconds = (int) (millisUntilFinished / 1000) % 60;
-//        int minutes = (int) ((millisUntilFinished / (1000 * 60)) % 60);
-//        int hours = (int) ((millisUntilFinished / (1000 * 60 * 60)) % 24);
 //        String newtime = hours + ":" + minutes + ":" + seconds;
-//        remainingTime=START_TIME_IN_MILLIS-TimeLeftInMillis;
+        remainingTime = START_TIME_IN_MILLIS - TimeLeftInMillis;
 
         CountDown_Tv.setText(timeLeftFormatted);
 
     }
-
 
 }
