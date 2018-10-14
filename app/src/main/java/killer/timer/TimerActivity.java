@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
+import java.util.Calendar;
 import java.util.Locale;
 
 public class TimerActivity extends AppCompatActivity {
@@ -16,9 +18,11 @@ public class TimerActivity extends AppCompatActivity {
 
     //    TODO Accept Input from user & store it in  START_TIME_IN_MILLIS
 
+
     private TextView CountDown_Tv;
     private Button StartPauseButton;
     private Button ResetButton;
+    TimePicker TimePicker;
 
     private CountDownTimer MyCountDownTimer;
     private boolean TimerRunning;
@@ -42,6 +46,13 @@ public class TimerActivity extends AppCompatActivity {
         ResetButton = findViewById(R.id.ResetButton);
         MyProgressBar = findViewById(R.id.circular_progress_bar);
 
+        TimePicker = findViewById(R.id.TimePicker);
+        //Get a new instance of Calendar
+        final Calendar c = Calendar.getInstance();
+        int hr = c.get(Calendar.HOUR_OF_DAY); //Current Hour
+        int min = c.get(Calendar.MINUTE); //Current Minute
+        int sec = c.get(Calendar.SECOND); //Current Second
+
         StartPauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +63,7 @@ public class TimerActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         ResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +78,53 @@ public class TimerActivity extends AppCompatActivity {
         MyProgressBar.setProgress(0);
         MyProgressBar.setMax(100);
 
+        //Display the TimePicker initial time
+        CountDown_Tv.setText(" " + hr + ":" + min + ":" + sec);
+
+
+        //Set a TimeChangedListener for TimePicker widget
+        TimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                //Display the new time to app interface
+                CountDown_Tv.setText("Time changed\nH:M | " + hourOfDay + ":" + minute);
+            }
+        });
+
+
+//        showDialog(1);
     }
+
+//    protected Dialog onCreateDialog(int id) {
+//
+//        // Get the calander
+//        Calendar c = Calendar.getInstance();
+//
+//        // From calander get the year, month, day, hour, minute
+////        int year = c.get(Calendar.YEAR);
+////        int month = c.get(Calendar.MONTH);
+////        int day = c.get(Calendar.DAY_OF_MONTH);
+//        int hour = c.get(Calendar.HOUR_OF_DAY);
+//        int minute = c.get(Calendar.MINUTE);
+//
+//
+//        // Open the timepicker dialog
+//        return new TimePickerDialog(TimerActivity.this, time_listener, hour,
+//                minute, false);
+//
+//
+//    }
+//
+//    TimePickerDialog.OnTimeSetListener time_listener = new TimePickerDialog.OnTimeSetListener() {
+//
+//        @Override
+//        public void onTimeSet(TimePicker view, int hour, int minute) {
+//            // store the data in one string and set it to text
+//            String time1 = String.valueOf(hour) + ":" + String.valueOf(minute);
+//            CountDown_Tv.setText(time1);
+//        }
+//    };
+
 
     private void startTimer() {
 //        Creating CountDownTimer for START_TIME_IN_MILLIS milliseconds and 1000(1sec) interval
@@ -101,6 +159,7 @@ public class TimerActivity extends AppCompatActivity {
         TimerRunning = true;
         StartPauseButton.setText("Pause");
         ResetButton.setVisibility(View.INVISIBLE);
+
     }
 
     private void pauseTimer() {
